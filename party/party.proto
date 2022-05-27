@@ -1,0 +1,104 @@
+syntax = "proto3";
+
+package party;
+option go_package = "github.com/clubo-app/protobuf/party";
+
+import "common/common.proto";
+
+service PartyService {
+    rpc CreateParty (CreatePartyRequest) returns (Party) {};
+    rpc GetParty (GetPartyRequest) returns (Party) {};
+    rpc UpdateParty (UpdatePartyRequest) returns (Party) {};
+    rpc DeleteParty (DeletePartyRequest) returns (common.SuccessIndicator) {};
+    rpc GetByUser (GetByUserRequest) returns (PagedParties) {};
+    rpc GeoSearch (GeoSearchRequest) returns (PagedParties) {};
+
+    rpc GetManyParties (GetManyPartiesRequest) returns (GetManyPartiesResponse) {}
+    rpc GetManyPartiesMap (GetManyPartiesRequest) returns (GetManyPartiesMapResponse) {}
+
+}
+
+// Requests
+message CreatePartyRequest {
+    string requester_id = 1;
+    string title = 2;
+    float lat = 3;
+    float long = 4;
+    bool is_public = 5;
+    string street_address = 6;
+    string postal_code = 7;
+    string state = 8;
+    string country = 9;
+    string start_date = 10;
+    string end_date = 11;
+}
+
+message GetPartyRequest {
+    string party_id = 1;
+}
+
+message UpdatePartyRequest {
+    string requester_id = 1;
+    string party_id = 2;
+    string title = 3;
+    float lat = 4;
+    float long = 5;
+    string street_address = 6;
+    string postal_code = 7;
+    string state = 8;
+    string country = 9;
+    string start_date = 10;
+    string end_date = 11;
+}
+
+message DeletePartyRequest {
+    string requester_id = 1;
+    string party_id = 2;
+}
+
+message GetByUserRequest {
+    string user_id = 1;
+    string next_page = 2;
+    uint32 limit = 3;
+}
+
+message GeoSearchRequest {
+    int64 precision = 1;
+    float lat = 2;
+    float long = 3;
+    string next_page = 4;
+}
+
+message GetManyPartiesRequest {
+    repeated string ids = 1;
+}
+
+// Response
+message Party {
+    string id = 1;
+    string user_id = 2;
+    string title = 3;
+    bool is_public = 4;
+    float lat = 5;
+    float long = 6;
+    string street_address = 7;
+    string postal_code = 8;
+    string state = 9;
+    string country = 10;
+    string start_date = 11;
+    string end_date = 12;
+    string created_at = 13;
+}
+
+message PagedParties {
+    repeated Party parties = 1;
+    string next_page = 2;
+}
+
+message GetManyPartiesResponse {
+    repeated Party parties = 1;
+}
+
+message GetManyPartiesMapResponse {
+    map<string, Party> parties = 1;
+}

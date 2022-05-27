@@ -1,0 +1,69 @@
+syntax = "proto3";
+
+package story;
+option go_package = "github.com/clubo-app/protobuf/story";
+
+import "common/common.proto";
+
+service StoryService {
+    rpc CreateStory (CreateStoryRequest) returns (PublicStory) {};
+    rpc GetStory (GetStoryRequest) returns (PublicStory) {};
+    rpc DeleteStory (DeleteStoryRequest) returns (common.MessageResponse) {};
+    rpc GetByUser (GetByUserRequest) returns (PagedStories) {};
+    rpc GetByParty (GetByPartyRequest) returns (PagedStories) {};
+    rpc PresignURL (PresignURLRequest) returns (PresignURLResponse) {};
+}
+
+message PublicStory {
+    string id = 1;
+    string party_id = 2;
+    string user_id = 3;
+    float lat = 5;
+    float long = 6;
+    string url = 4;
+    repeated string tagged_friends = 7;
+    string created_at = 8;
+}
+
+message CreateStoryRequest {
+    string requester_id = 1;
+    string party_id = 2;
+    string url = 3;
+    float lat = 4;
+    float long = 5;
+    repeated string tagged_friends = 6;
+}
+
+message GetStoryRequest {
+    string story_id = 1;
+}
+
+message DeleteStoryRequest {
+    string requester_id = 1;
+    string story_id = 2;
+}
+
+message GetByUserRequest {
+    string user_id = 1;
+    string next_page = 2;
+    uint32 limit = 3;
+}
+
+message GetByPartyRequest {
+    string party_id = 1;
+    string next_page = 2;
+    uint32 limit = 3;
+}
+
+message PresignURLRequest {
+    string key = 1;
+}
+
+message PagedStories {
+    repeated PublicStory stories = 1;
+    string next_page = 2;
+}
+
+message PresignURLResponse {
+    string url = 1;
+}

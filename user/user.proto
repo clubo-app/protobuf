@@ -1,0 +1,124 @@
+syntax = "proto3";
+
+package user;
+option go_package = "github.com/clubo-app/protobuf/user";
+
+import "common/common.proto";
+
+service UserService {
+    rpc Register (RegisterRequest) returns (RegisterResponse) {}
+    rpc Login (LoginRequest) returns (LoginResponse) {}
+    rpc GoogleLogin (GoogleLoginRequest) returns (LoginResponse) {}
+    rpc AppleLogin (AppleLoginRequest) returns (LoginResponse) {}
+    rpc VerifyEmail (VerifyEmailRequest) returns (common.SuccessIndicator) {}
+    rpc ResendVerificationEmail (common.Empty) returns (common.SuccessIndicator) {}
+
+    rpc DeleteUser (DeleteUserRequest) returns (common.SuccessIndicator) {};
+    rpc UpdateUser (UpdateUserRequest) returns (User) {};
+    rpc GetUser (GetUserRequest) returns (User) {};
+
+    rpc GetProfile (GetProfileRequest) returns (Profile) {};
+    rpc GetManyProfiles (GetManyProfilesRequest) returns (GetManyProfilesResponse) {};
+    rpc GetManyProfilesMap (GetManyProfilesRequest) returns (GetManyProfilesMapResponse) {};
+    rpc UsernameTaken (UsernameTakenRequest) returns (UsernameTakenResponse) {};
+}
+
+// Requests
+message User {
+    string id = 1;
+    string email = 2;
+    string username = 3;
+    string firstname = 4;
+    string lastname = 5;
+    string avatar = 6;
+    uint32 friendCount = 7;
+}
+
+message Profile {
+    string id = 1;
+    string username = 2;
+    string firstname = 3;
+    string lastname = 4;
+    string avatar = 5;
+    uint32 friendCount = 7;
+}
+
+message RegisterRequest {
+    string email = 1;
+    string username = 2;
+    string firstname = 3;
+    string lastname = 4;
+    string password = 5;
+}
+
+message LoginRequest {
+    string usernameOrEmail = 1;
+    string password = 2;
+}
+
+message GoogleLoginRequest {
+    string token = 1;
+}
+
+message AppleLoginRequest {
+    string token = 1;
+}
+
+message VerifyEmailRequest {
+    string email = 1;
+    string code = 2;
+}
+
+message DeleteUserRequest {
+    string id = 1;
+}
+
+message UpdateUserRequest {
+    string id = 1;
+    string email = 2;
+    string username = 3;
+    string firstname = 4;
+    string lastname = 5;
+    string avatar = 6;
+    string password = 7;
+}
+
+message GetUserRequest {
+    string id = 1;
+}
+
+message GetProfileRequest {
+    string id = 1;
+}
+
+message GetManyProfilesRequest {
+    repeated string ids = 1;
+}
+
+message UsernameTakenRequest {
+    string username = 1;
+}
+
+// Response
+
+message UsernameTakenResponse {
+    bool taken = 1;
+}
+
+message RegisterResponse {
+    string token = 1;
+    User user = 2;
+}
+
+message LoginResponse {
+    string token = 1;
+    User user = 2;
+}
+
+message GetManyProfilesResponse {
+    repeated Profile profiles = 1;
+}
+
+message GetManyProfilesMapResponse {
+    map<string, Profile> profiles = 1;
+}
