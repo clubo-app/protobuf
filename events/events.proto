@@ -1,0 +1,66 @@
+syntax="proto3";
+
+package events;
+option go_package = "github.com/clubo-app/protobuf/events";
+
+import "party/party.proto";
+import "user/user.proto";
+
+message Registered {
+    string id = 1;
+    string email = 2;
+    string username = 3;
+    string firstname = 4;
+    string lastname = 5;
+}
+
+// id must always be defined but for the rest just define the properties that got updated
+message ProfileUpdated {
+    user.Profile profile = 1;
+}
+
+message PartyCreated {
+    string id = 1;
+    string user_id = 2;
+    string title = 3;
+    bool is_public = 4;
+    float lat = 5;
+    float long = 6;
+    string geohash = 7;
+    string street_address = 8;
+    string postal_code = 9;
+    string state = 10;
+    string country = 11;
+    string start_date = 12;
+    string created_at = 13;
+}
+
+message PartyUpdated {
+    string id = 1;
+    string user_id = 2;
+    string title = 3;
+    bool is_public = 4;
+    float lat = 5;
+    float long = 6;
+    string street_address = 7;
+    string postal_code = 8;
+    string state = 9;
+    string country = 10;
+    string start_date = 11;
+    string created_at = 12;
+}
+
+message FriendRemoved {
+    string user_id = 1;
+    string friend_id = 2;
+}
+
+message FriendRequested {
+    string user_id = 1;
+    string friend_id = 2;
+}
+
+message FriendAccepted {
+    string user_id = 1;
+    string friend_id = 2;
+}
