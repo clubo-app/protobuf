@@ -92,7 +92,6 @@ message Party {
 
 message PagedParties {
     repeated Party parties = 1;
-    string next_page = 2;
 }
 
 message GetManyPartiesResponse {
