@@ -58,7 +58,7 @@ message DeletePartyRequest {
 
 message GetByUserRequest {
     string user_id = 1;
-    string next_page = 2;
+    uint32 offset = 2;
     uint32 limit = 3;
 }
 
