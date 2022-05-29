@@ -31,7 +31,6 @@ message User {
     string firstname = 4;
     string lastname = 5;
     string avatar = 6;
-    uint32 friendCount = 7;
 }
 
 message Profile {
@@ -40,7 +39,6 @@ message Profile {
     string firstname = 3;
     string lastname = 4;
     string avatar = 5;
-    uint32 friendCount = 7;
 }
 
 message RegisterRequest {
