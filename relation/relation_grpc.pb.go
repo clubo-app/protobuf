@@ -28,6 +28,8 @@ type RelationServiceClient interface {
 	RemoveFriend(ctx context.Context, in *RemoveFriendRequest, opts ...grpc.CallOption) (*common.SuccessIndicator, error)
 	GetFriendRelation(ctx context.Context, in *GetFriendRelationRequest, opts ...grpc.CallOption) (*FriendRelation, error)
 	GetFriendsOfUser(ctx context.Context, in *GetFriendsOfUserRequest, opts ...grpc.CallOption) (*PagedFriendRelations, error)
+	GetFriendCount(ctx context.Context, in *GetFriendCountRequest, opts ...grpc.CallOption) (*GetFriendCountResponse, error)
+	GetManyFriendCount(ctx context.Context, in *GetManyFriendCountRequest, opts ...grpc.CallOption) (*GetManyFriendCountResponse, error)
 	FavorParty(ctx context.Context, in *FavorPartyRequest, opts ...grpc.CallOption) (*FavoriteParty, error)
 	DefavorParty(ctx context.Context, in *FavorPartyRequest, opts ...grpc.CallOption) (*common.SuccessIndicator, error)
 	GetFavoritePartiesByUser(ctx context.Context, in *GetFavoritePartiesByUserRequest, opts ...grpc.CallOption) (*PagedFavoriteParties, error)
@@ -87,6 +89,24 @@ func (c *relationServiceClient) GetFriendsOfUser(ctx context.Context, in *GetFri
 	return out, nil
 }
 
+func (c *relationServiceClient) GetFriendCount(ctx context.Context, in *GetFriendCountRequest, opts ...grpc.CallOption) (*GetFriendCountResponse, error) {
+	out := new(GetFriendCountResponse)
+	err := c.cc.Invoke(ctx, "/relation.RelationService/GetFriendCount", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *relationServiceClient) GetManyFriendCount(ctx context.Context, in *GetManyFriendCountRequest, opts ...grpc.CallOption) (*GetManyFriendCountResponse, error) {
+	out := new(GetManyFriendCountResponse)
+	err := c.cc.Invoke(ctx, "/relation.RelationService/GetManyFriendCount", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *relationServiceClient) FavorParty(ctx context.Context, in *FavorPartyRequest, opts ...grpc.CallOption) (*FavoriteParty, error) {
 	out := new(FavoriteParty)
 	err := c.cc.Invoke(ctx, "/relation.RelationService/FavorParty", in, out, opts...)
@@ -132,6 +152,8 @@ type RelationServiceServer interface {
 	RemoveFriend(context.Context, *RemoveFriendRequest) (*common.SuccessIndicator, error)
 	GetFriendRelation(context.Context, *GetFriendRelationRequest) (*FriendRelation, error)
 	GetFriendsOfUser(context.Context, *GetFriendsOfUserRequest) (*PagedFriendRelations, error)
+	GetFriendCount(context.Context, *GetFriendCountRequest) (*GetFriendCountResponse, error)
+	GetManyFriendCount(context.Context, *GetManyFriendCountRequest) (*GetManyFriendCountResponse, error)
 	FavorParty(context.Context, *FavorPartyRequest) (*FavoriteParty, error)
 	DefavorParty(context.Context, *FavorPartyRequest) (*common.SuccessIndicator, error)
 	GetFavoritePartiesByUser(context.Context, *GetFavoritePartiesByUserRequest) (*PagedFavoriteParties, error)
@@ -157,6 +179,12 @@ func (UnimplementedRelationServiceServer) GetFriendRelation(context.Context, *Ge
 }
 func (UnimplementedRelationServiceServer) GetFriendsOfUser(context.Context, *GetFriendsOfUserRequest) (*PagedFriendRelations, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetFriendsOfUser not implemented")
+}
+func (UnimplementedRelationServiceServer) GetFriendCount(context.Context, *GetFriendCountRequest) (*GetFriendCountResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetFriendCount not implemented")
+}
+func (UnimplementedRelationServiceServer) GetManyFriendCount(context.Context, *GetManyFriendCountRequest) (*GetManyFriendCountResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetManyFriendCount not implemented")
 }
 func (UnimplementedRelationServiceServer) FavorParty(context.Context, *FavorPartyRequest) (*FavoriteParty, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method FavorParty not implemented")
@@ -273,6 +301,42 @@ func _RelationService_GetFriendsOfUser_Handler(srv interface{}, ctx context.Cont
 	return interceptor(ctx, in, info, handler)
 }
 
+func _RelationService_GetFriendCount_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetFriendCountRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(RelationServiceServer).GetFriendCount(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/relation.RelationService/GetFriendCount",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(RelationServiceServer).GetFriendCount(ctx, req.(*GetFriendCountRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _RelationService_GetManyFriendCount_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetManyFriendCountRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(RelationServiceServer).GetManyFriendCount(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/relation.RelationService/GetManyFriendCount",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(RelationServiceServer).GetManyFriendCount(ctx, req.(*GetManyFriendCountRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _RelationService_FavorParty_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(FavorPartyRequest)
 	if err := dec(in); err != nil {
@@ -371,6 +435,14 @@ var RelationService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetFriendsOfUser",
 			Handler:    _RelationService_GetFriendsOfUser_Handler,
+		},
+		{
+			MethodName: "GetFriendCount",
+			Handler:    _RelationService_GetFriendCount_Handler,
+		},
+		{
+			MethodName: "GetManyFriendCount",
+			Handler:    _RelationService_GetManyFriendCount_Handler,
 		},
 		{
 			MethodName: "FavorParty",

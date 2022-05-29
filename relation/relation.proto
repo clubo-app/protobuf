@@ -12,6 +12,9 @@ service RelationService {
     rpc GetFriendRelation (GetFriendRelationRequest) returns (FriendRelation) {};
     rpc GetFriendsOfUser (GetFriendsOfUserRequest) returns (PagedFriendRelations) {};
 
+    rpc GetFriendCount (GetFriendCountRequest) returns (GetFriendCountResponse) {};
+    rpc GetManyFriendCount (GetManyFriendCountRequest) returns (GetManyFriendCountResponse) {};
+
     rpc FavorParty (FavorPartyRequest) returns (FavoriteParty) {};
     rpc DefavorParty (FavorPartyRequest) returns (common.SuccessIndicator) {};
     rpc GetFavoritePartiesByUser (GetFavoritePartiesByUserRequest) returns (PagedFavoriteParties) {};
@@ -19,7 +22,6 @@ service RelationService {
 }
 
 // Requests
-
 message FriendRequestRequest {
     string user_id = 1;
     string friend_id = 2;
@@ -46,6 +48,14 @@ message GetFriendsOfUserRequest {
     uint32 limit = 3;
 }
 
+message GetFriendCountRequest {
+    string user_id = 1;
+}
+
+message GetManyFriendCountRequest {
+    repeated string user_ids = 1;
+}
+
 message FavorPartyRequest {
     string user_id = 1;
     string party_id = 2;
@@ -64,8 +74,7 @@ message GetFavorisingUsersByPartyRequest {
 }
 
 
-// Respons
-
+// Responses
 message FriendRelation {
     string user_id = 1;
     string friend_id = 2;
@@ -77,6 +86,14 @@ message FriendRelation {
 message PagedFriendRelations {
     repeated FriendRelation relations = 1;
     string next_page = 2;
+}
+
+message GetFriendCountResponse {
+    uint32 friend_count = 1;
+}
+
+message GetManyFriendCountResponse {
+    map<string, uint32> friend_counts = 1;
 }
 
 message FavoriteParty {
