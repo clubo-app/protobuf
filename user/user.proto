@@ -91,7 +91,6 @@ message GetProfileRequest {
 
 message GetManyProfilesRequest {
     repeated string ids = 1;
-    int32 limit = 3;
 }
 
 message UsernameTakenRequest {
