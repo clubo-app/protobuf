@@ -23,8 +23,9 @@ const _ = grpc.SupportPackageIsVersion7
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type RelationServiceClient interface {
-	FriendRequest(ctx context.Context, in *FriendRequestRequest, opts ...grpc.CallOption) (*common.SuccessIndicator, error)
-	AcceptFriend(ctx context.Context, in *AcceptFriendRequest, opts ...grpc.CallOption) (*common.SuccessIndicator, error)
+	CreateFriendRequest(ctx context.Context, in *CreateFriendRequestRequest, opts ...grpc.CallOption) (*common.SuccessIndicator, error)
+	AcceptFriendRequest(ctx context.Context, in *AcceptFriendRequestRequest, opts ...grpc.CallOption) (*common.SuccessIndicator, error)
+	DeclineFriendRequest(ctx context.Context, in *DeclineFriendRequestRequest, opts ...grpc.CallOption) (*common.SuccessIndicator, error)
 	RemoveFriend(ctx context.Context, in *RemoveFriendRequest, opts ...grpc.CallOption) (*common.SuccessIndicator, error)
 	GetFriendRelation(ctx context.Context, in *GetFriendRelationRequest, opts ...grpc.CallOption) (*FriendRelation, error)
 	GetFriendsOfUser(ctx context.Context, in *GetFriendsOfUserRequest, opts ...grpc.CallOption) (*PagedFriendRelations, error)
@@ -44,18 +45,27 @@ func NewRelationServiceClient(cc grpc.ClientConnInterface) RelationServiceClient
 	return &relationServiceClient{cc}
 }
 
-func (c *relationServiceClient) FriendRequest(ctx context.Context, in *FriendRequestRequest, opts ...grpc.CallOption) (*common.SuccessIndicator, error) {
+func (c *relationServiceClient) CreateFriendRequest(ctx context.Context, in *CreateFriendRequestRequest, opts ...grpc.CallOption) (*common.SuccessIndicator, error) {
 	out := new(common.SuccessIndicator)
-	err := c.cc.Invoke(ctx, "/relation.RelationService/FriendRequest", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/relation.RelationService/CreateFriendRequest", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *relationServiceClient) AcceptFriend(ctx context.Context, in *AcceptFriendRequest, opts ...grpc.CallOption) (*common.SuccessIndicator, error) {
+func (c *relationServiceClient) AcceptFriendRequest(ctx context.Context, in *AcceptFriendRequestRequest, opts ...grpc.CallOption) (*common.SuccessIndicator, error) {
 	out := new(common.SuccessIndicator)
-	err := c.cc.Invoke(ctx, "/relation.RelationService/AcceptFriend", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/relation.RelationService/AcceptFriendRequest", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *relationServiceClient) DeclineFriendRequest(ctx context.Context, in *DeclineFriendRequestRequest, opts ...grpc.CallOption) (*common.SuccessIndicator, error) {
+	out := new(common.SuccessIndicator)
+	err := c.cc.Invoke(ctx, "/relation.RelationService/DeclineFriendRequest", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -147,8 +157,9 @@ func (c *relationServiceClient) GetFavorisingUsersByParty(ctx context.Context, i
 // All implementations must embed UnimplementedRelationServiceServer
 // for forward compatibility
 type RelationServiceServer interface {
-	FriendRequest(context.Context, *FriendRequestRequest) (*common.SuccessIndicator, error)
-	AcceptFriend(context.Context, *AcceptFriendRequest) (*common.SuccessIndicator, error)
+	CreateFriendRequest(context.Context, *CreateFriendRequestRequest) (*common.SuccessIndicator, error)
+	AcceptFriendRequest(context.Context, *AcceptFriendRequestRequest) (*common.SuccessIndicator, error)
+	DeclineFriendRequest(context.Context, *DeclineFriendRequestRequest) (*common.SuccessIndicator, error)
 	RemoveFriend(context.Context, *RemoveFriendRequest) (*common.SuccessIndicator, error)
 	GetFriendRelation(context.Context, *GetFriendRelationRequest) (*FriendRelation, error)
 	GetFriendsOfUser(context.Context, *GetFriendsOfUserRequest) (*PagedFriendRelations, error)
@@ -165,11 +176,14 @@ type RelationServiceServer interface {
 type UnimplementedRelationServiceServer struct {
 }
 
-func (UnimplementedRelationServiceServer) FriendRequest(context.Context, *FriendRequestRequest) (*common.SuccessIndicator, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method FriendRequest not implemented")
+func (UnimplementedRelationServiceServer) CreateFriendRequest(context.Context, *CreateFriendRequestRequest) (*common.SuccessIndicator, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CreateFriendRequest not implemented")
 }
-func (UnimplementedRelationServiceServer) AcceptFriend(context.Context, *AcceptFriendRequest) (*common.SuccessIndicator, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method AcceptFriend not implemented")
+func (UnimplementedRelationServiceServer) AcceptFriendRequest(context.Context, *AcceptFriendRequestRequest) (*common.SuccessIndicator, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method AcceptFriendRequest not implemented")
+}
+func (UnimplementedRelationServiceServer) DeclineFriendRequest(context.Context, *DeclineFriendRequestRequest) (*common.SuccessIndicator, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeclineFriendRequest not implemented")
 }
 func (UnimplementedRelationServiceServer) RemoveFriend(context.Context, *RemoveFriendRequest) (*common.SuccessIndicator, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method RemoveFriend not implemented")
@@ -211,38 +225,56 @@ func RegisterRelationServiceServer(s grpc.ServiceRegistrar, srv RelationServiceS
 	s.RegisterService(&RelationService_ServiceDesc, srv)
 }
 
-func _RelationService_FriendRequest_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(FriendRequestRequest)
+func _RelationService_CreateFriendRequest_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CreateFriendRequestRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(RelationServiceServer).FriendRequest(ctx, in)
+		return srv.(RelationServiceServer).CreateFriendRequest(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/relation.RelationService/FriendRequest",
+		FullMethod: "/relation.RelationService/CreateFriendRequest",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(RelationServiceServer).FriendRequest(ctx, req.(*FriendRequestRequest))
+		return srv.(RelationServiceServer).CreateFriendRequest(ctx, req.(*CreateFriendRequestRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _RelationService_AcceptFriend_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(AcceptFriendRequest)
+func _RelationService_AcceptFriendRequest_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(AcceptFriendRequestRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(RelationServiceServer).AcceptFriend(ctx, in)
+		return srv.(RelationServiceServer).AcceptFriendRequest(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/relation.RelationService/AcceptFriend",
+		FullMethod: "/relation.RelationService/AcceptFriendRequest",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(RelationServiceServer).AcceptFriend(ctx, req.(*AcceptFriendRequest))
+		return srv.(RelationServiceServer).AcceptFriendRequest(ctx, req.(*AcceptFriendRequestRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _RelationService_DeclineFriendRequest_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DeclineFriendRequestRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(RelationServiceServer).DeclineFriendRequest(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/relation.RelationService/DeclineFriendRequest",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(RelationServiceServer).DeclineFriendRequest(ctx, req.(*DeclineFriendRequestRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -417,12 +449,16 @@ var RelationService_ServiceDesc = grpc.ServiceDesc{
 	HandlerType: (*RelationServiceServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
-			MethodName: "FriendRequest",
-			Handler:    _RelationService_FriendRequest_Handler,
+			MethodName: "CreateFriendRequest",
+			Handler:    _RelationService_CreateFriendRequest_Handler,
 		},
 		{
-			MethodName: "AcceptFriend",
-			Handler:    _RelationService_AcceptFriend_Handler,
+			MethodName: "AcceptFriendRequest",
+			Handler:    _RelationService_AcceptFriendRequest_Handler,
+		},
+		{
+			MethodName: "DeclineFriendRequest",
+			Handler:    _RelationService_DeclineFriendRequest_Handler,
 		},
 		{
 			MethodName: "RemoveFriend",

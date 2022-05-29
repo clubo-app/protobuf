@@ -6,8 +6,9 @@ option go_package = "github.com/clubo-app/protobuf/relation";
 import "common/common.proto";
 
 service RelationService {
-    rpc FriendRequest (FriendRequestRequest) returns (common.SuccessIndicator) {};
-    rpc AcceptFriend (AcceptFriendRequest) returns (common.SuccessIndicator) {};
+    rpc CreateFriendRequest (CreateFriendRequestRequest) returns (common.SuccessIndicator) {};
+    rpc AcceptFriendRequest (AcceptFriendRequestRequest) returns (common.SuccessIndicator) {};
+    rpc DeclineFriendRequest (DeclineFriendRequestRequest) returns (common.SuccessIndicator) {};
     rpc RemoveFriend (RemoveFriendRequest) returns (common.SuccessIndicator) {};
     rpc GetFriendRelation (GetFriendRelationRequest) returns (FriendRelation) {};
     rpc GetFriendsOfUser (GetFriendsOfUserRequest) returns (PagedFriendRelations) {};
@@ -22,12 +23,17 @@ service RelationService {
 }
 
 // Requests
-message FriendRequestRequest {
+message CreateFriendRequestRequest {
     string user_id = 1;
     string friend_id = 2;
 }
 
-message AcceptFriendRequest {
+message AcceptFriendRequestRequest {
+    string user_id = 1;
+    string friend_id = 2;
+}
+
+message DeclineFriendRequestRequest {
     string user_id = 1;
     string friend_id = 2;
 }
