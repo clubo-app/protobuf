@@ -10,7 +10,7 @@ service UserService {
     rpc Login (LoginRequest) returns (LoginResponse) {}
     rpc GoogleLogin (GoogleLoginRequest) returns (LoginResponse) {}
     rpc AppleLogin (AppleLoginRequest) returns (LoginResponse) {}
-    rpc VerifyEmail (VerifyEmailRequest) returns (common.SuccessIndicator) {}
+    rpc VerifyEmail (VerifyEmailRequest) returns (User) {}
     rpc ResendVerificationEmail (common.Empty) returns (common.SuccessIndicator) {}
 
     rpc DeleteUser (DeleteUserRequest) returns (common.SuccessIndicator) {};

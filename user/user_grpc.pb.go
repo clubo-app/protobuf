@@ -27,7 +27,7 @@ type UserServiceClient interface {
 	Login(ctx context.Context, in *LoginRequest, opts ...grpc.CallOption) (*LoginResponse, error)
 	GoogleLogin(ctx context.Context, in *GoogleLoginRequest, opts ...grpc.CallOption) (*LoginResponse, error)
 	AppleLogin(ctx context.Context, in *AppleLoginRequest, opts ...grpc.CallOption) (*LoginResponse, error)
-	VerifyEmail(ctx context.Context, in *VerifyEmailRequest, opts ...grpc.CallOption) (*common.SuccessIndicator, error)
+	VerifyEmail(ctx context.Context, in *VerifyEmailRequest, opts ...grpc.CallOption) (*User, error)
 	ResendVerificationEmail(ctx context.Context, in *common.Empty, opts ...grpc.CallOption) (*common.SuccessIndicator, error)
 	DeleteUser(ctx context.Context, in *DeleteUserRequest, opts ...grpc.CallOption) (*common.SuccessIndicator, error)
 	UpdateUser(ctx context.Context, in *UpdateUserRequest, opts ...grpc.CallOption) (*User, error)
@@ -82,8 +82,8 @@ func (c *userServiceClient) AppleLogin(ctx context.Context, in *AppleLoginReques
 	return out, nil
 }
 
-func (c *userServiceClient) VerifyEmail(ctx context.Context, in *VerifyEmailRequest, opts ...grpc.CallOption) (*common.SuccessIndicator, error) {
-	out := new(common.SuccessIndicator)
+func (c *userServiceClient) VerifyEmail(ctx context.Context, in *VerifyEmailRequest, opts ...grpc.CallOption) (*User, error) {
+	out := new(User)
 	err := c.cc.Invoke(ctx, "/user.UserService/VerifyEmail", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -171,7 +171,7 @@ type UserServiceServer interface {
 	Login(context.Context, *LoginRequest) (*LoginResponse, error)
 	GoogleLogin(context.Context, *GoogleLoginRequest) (*LoginResponse, error)
 	AppleLogin(context.Context, *AppleLoginRequest) (*LoginResponse, error)
-	VerifyEmail(context.Context, *VerifyEmailRequest) (*common.SuccessIndicator, error)
+	VerifyEmail(context.Context, *VerifyEmailRequest) (*User, error)
 	ResendVerificationEmail(context.Context, *common.Empty) (*common.SuccessIndicator, error)
 	DeleteUser(context.Context, *DeleteUserRequest) (*common.SuccessIndicator, error)
 	UpdateUser(context.Context, *UpdateUserRequest) (*User, error)
@@ -199,7 +199,7 @@ func (UnimplementedUserServiceServer) GoogleLogin(context.Context, *GoogleLoginR
 func (UnimplementedUserServiceServer) AppleLogin(context.Context, *AppleLoginRequest) (*LoginResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method AppleLogin not implemented")
 }
-func (UnimplementedUserServiceServer) VerifyEmail(context.Context, *VerifyEmailRequest) (*common.SuccessIndicator, error) {
+func (UnimplementedUserServiceServer) VerifyEmail(context.Context, *VerifyEmailRequest) (*User, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method VerifyEmail not implemented")
 }
 func (UnimplementedUserServiceServer) ResendVerificationEmail(context.Context, *common.Empty) (*common.SuccessIndicator, error) {
