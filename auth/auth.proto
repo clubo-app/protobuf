@@ -1,0 +1,60 @@
+syntax = "proto3";
+
+package auth;
+option go_package = "github.com/clubo-app/protobuf/auth";
+
+import "common/common.proto";
+
+service AuthService {
+    rpc RegisterUser (RegisterUserRequest) returns (RegisterUserResponse) {};
+    rpc LoginUser (LoginUserRequest) returns (LoginUserResponse) {};
+    rpc GoogleLoginUser (GoogleLoginUserRequest) returns (LoginUserResponse) {}
+    rpc AppleLoginUser (AppleLoginUserRequest) returns (LoginUserResponse) {}
+    rpc VerifyEmail (VerifyEmailRequest) returns (Account) {}
+    rpc ResendVerificationEmail (common.Empty) returns (common.SuccessIndicator) {}
+}
+
+// Requests
+message RegisterUserRequest {
+    string email = 1;
+    string password = 2;
+}
+
+message LoginUserRequest {
+    string email = 1;
+    string password = 2;
+}
+
+message GoogleLoginUserRequest {
+    string token = 1;
+}
+
+message AppleLoginUserRequest {
+    string token = 1;
+}
+
+message VerifyEmailRequest {
+    string email = 1;
+    string code = 2;
+}
+
+// Response
+message Account {
+    string id = 1;
+    string email = 2;
+    bool email_verified = 3;
+    string email_code = 4;
+    common.Provider provider = 5;
+    common.Role role = 6;
+}
+
+message RegisterUserResponse {
+    string token = 1;
+    Account account = 2;
+}
+
+message LoginUserResponse {
+    string token = 1;
+    Account account = 2;
+}
+

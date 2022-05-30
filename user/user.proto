@@ -98,7 +98,6 @@ message UsernameTakenRequest {
 }
 
 // Response
-
 message UsernameTakenResponse {
     bool taken = 1;
 }
