@@ -12,6 +12,10 @@ service AuthService {
     rpc AppleLoginUser (AppleLoginUserRequest) returns (LoginUserResponse) {}
     rpc VerifyEmail (VerifyEmailRequest) returns (Account) {}
     rpc ResendVerificationEmail (common.Empty) returns (common.SuccessIndicator) {}
+
+    rpc GetAccount (GetAccountRequest) returns (Account) {};
+    rpc UpdateAccount (UpdateAccountRequest) returns (Account) {};
+    rpc DeleteAccount (DeleteAccountRequest) returns (common.SuccessIndicator) {};
 }
 
 // Requests
@@ -38,7 +42,25 @@ message VerifyEmailRequest {
     string code = 2;
 }
 
+message GetAccountRequest {
+    string id = 1;
+}
+
+message UpdateAccountRequest {
+    string id = 1;
+    string email = 2;
+}
+
+message DeleteAccountRequest {
+    string id = 1;
+}
+
 // Response
+enum AccountType {
+    USER = 0;
+    COMPANY = 1;
+}
+ 
 message Account {
     string id = 1;
     string email = 2;
@@ -46,6 +68,7 @@ message Account {
     string email_code = 4;
     common.Provider provider = 5;
     common.Role role = 6;
+    AccountType type = 7;
 }
 
 message RegisterUserResponse {

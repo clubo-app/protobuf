@@ -801,6 +801,7 @@ func (x *UsernameTakenRequest) GetUsername() string {
 	return ""
 }
 
+// Response
 type UsernameTakenResponse struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
