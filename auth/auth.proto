@@ -39,7 +39,7 @@ message AppleLoginUserRequest {
 }
 
 message VerifyEmailRequest {
-    string email = 1;
+    string id = 1;
     string code = 2;
 }
 
