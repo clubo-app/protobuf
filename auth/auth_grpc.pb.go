@@ -32,6 +32,7 @@ type AuthServiceClient interface {
 	GetAccount(ctx context.Context, in *GetAccountRequest, opts ...grpc.CallOption) (*Account, error)
 	UpdateAccount(ctx context.Context, in *UpdateAccountRequest, opts ...grpc.CallOption) (*Account, error)
 	DeleteAccount(ctx context.Context, in *DeleteAccountRequest, opts ...grpc.CallOption) (*common.SuccessIndicator, error)
+	EmailTaken(ctx context.Context, in *EmailTakenRequest, opts ...grpc.CallOption) (*EmailTakenResponse, error)
 }
 
 type authServiceClient struct {
@@ -123,6 +124,15 @@ func (c *authServiceClient) DeleteAccount(ctx context.Context, in *DeleteAccount
 	return out, nil
 }
 
+func (c *authServiceClient) EmailTaken(ctx context.Context, in *EmailTakenRequest, opts ...grpc.CallOption) (*EmailTakenResponse, error) {
+	out := new(EmailTakenResponse)
+	err := c.cc.Invoke(ctx, "/auth.AuthService/EmailTaken", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // AuthServiceServer is the server API for AuthService service.
 // All implementations must embed UnimplementedAuthServiceServer
 // for forward compatibility
@@ -136,6 +146,7 @@ type AuthServiceServer interface {
 	GetAccount(context.Context, *GetAccountRequest) (*Account, error)
 	UpdateAccount(context.Context, *UpdateAccountRequest) (*Account, error)
 	DeleteAccount(context.Context, *DeleteAccountRequest) (*common.SuccessIndicator, error)
+	EmailTaken(context.Context, *EmailTakenRequest) (*EmailTakenResponse, error)
 	mustEmbedUnimplementedAuthServiceServer()
 }
 
@@ -169,6 +180,9 @@ func (UnimplementedAuthServiceServer) UpdateAccount(context.Context, *UpdateAcco
 }
 func (UnimplementedAuthServiceServer) DeleteAccount(context.Context, *DeleteAccountRequest) (*common.SuccessIndicator, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DeleteAccount not implemented")
+}
+func (UnimplementedAuthServiceServer) EmailTaken(context.Context, *EmailTakenRequest) (*EmailTakenResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method EmailTaken not implemented")
 }
 func (UnimplementedAuthServiceServer) mustEmbedUnimplementedAuthServiceServer() {}
 
@@ -345,6 +359,24 @@ func _AuthService_DeleteAccount_Handler(srv interface{}, ctx context.Context, de
 	return interceptor(ctx, in, info, handler)
 }
 
+func _AuthService_EmailTaken_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(EmailTakenRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AuthServiceServer).EmailTaken(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/auth.AuthService/EmailTaken",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AuthServiceServer).EmailTaken(ctx, req.(*EmailTakenRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // AuthService_ServiceDesc is the grpc.ServiceDesc for AuthService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -387,6 +419,10 @@ var AuthService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "DeleteAccount",
 			Handler:    _AuthService_DeleteAccount_Handler,
+		},
+		{
+			MethodName: "EmailTaken",
+			Handler:    _AuthService_EmailTaken_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

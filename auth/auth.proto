@@ -16,6 +16,7 @@ service AuthService {
     rpc GetAccount (GetAccountRequest) returns (Account) {};
     rpc UpdateAccount (UpdateAccountRequest) returns (Account) {};
     rpc DeleteAccount (DeleteAccountRequest) returns (common.SuccessIndicator) {};
+    rpc EmailTaken (EmailTakenRequest) returns (EmailTakenResponse) {};
 }
 
 // Requests
@@ -55,6 +56,10 @@ message DeleteAccountRequest {
     string id = 1;
 }
 
+message EmailTakenRequest {
+    string email = 1;
+}
+
 // Response
 enum AccountType {
     USER = 0;
@@ -81,3 +86,6 @@ message LoginUserResponse {
     Account account = 2;
 }
 
+message EmailTakenResponse {
+    bool taken = 1;
+}
