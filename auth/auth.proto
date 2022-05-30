@@ -50,6 +50,7 @@ message GetAccountRequest {
 message UpdateAccountRequest {
     string id = 1;
     string email = 2;
+    string password = 3;
 }
 
 message DeleteAccountRequest {
