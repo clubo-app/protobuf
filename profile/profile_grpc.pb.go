@@ -8,6 +8,7 @@ package profile
 
 import (
 	context "context"
+	common "github.com/clubo-app/protobuf/common"
 	grpc "google.golang.org/grpc"
 	codes "google.golang.org/grpc/codes"
 	status "google.golang.org/grpc/status"
@@ -25,7 +26,7 @@ type ProfileServiceClient interface {
 	CreateProfile(ctx context.Context, in *CreateProfileRequest, opts ...grpc.CallOption) (*Profile, error)
 	GetProfile(ctx context.Context, in *GetProfileRequest, opts ...grpc.CallOption) (*Profile, error)
 	UpdateProfile(ctx context.Context, in *UpdateProfileRequest, opts ...grpc.CallOption) (*Profile, error)
-	DeleteProfile(ctx context.Context, in *DeleteProfileRequest, opts ...grpc.CallOption) (*Profile, error)
+	DeleteProfile(ctx context.Context, in *DeleteProfileRequest, opts ...grpc.CallOption) (*common.SuccessIndicator, error)
 	GetManyProfiles(ctx context.Context, in *GetManyProfilesRequest, opts ...grpc.CallOption) (*GetManyProfilesResponse, error)
 	GetManyProfilesMap(ctx context.Context, in *GetManyProfilesRequest, opts ...grpc.CallOption) (*GetManyProfilesMapResponse, error)
 	UsernameTaken(ctx context.Context, in *UsernameTakenRequest, opts ...grpc.CallOption) (*UsernameTakenResponse, error)
@@ -66,8 +67,8 @@ func (c *profileServiceClient) UpdateProfile(ctx context.Context, in *UpdateProf
 	return out, nil
 }
 
-func (c *profileServiceClient) DeleteProfile(ctx context.Context, in *DeleteProfileRequest, opts ...grpc.CallOption) (*Profile, error) {
-	out := new(Profile)
+func (c *profileServiceClient) DeleteProfile(ctx context.Context, in *DeleteProfileRequest, opts ...grpc.CallOption) (*common.SuccessIndicator, error) {
+	out := new(common.SuccessIndicator)
 	err := c.cc.Invoke(ctx, "/profile.ProfileService/DeleteProfile", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -109,7 +110,7 @@ type ProfileServiceServer interface {
 	CreateProfile(context.Context, *CreateProfileRequest) (*Profile, error)
 	GetProfile(context.Context, *GetProfileRequest) (*Profile, error)
 	UpdateProfile(context.Context, *UpdateProfileRequest) (*Profile, error)
-	DeleteProfile(context.Context, *DeleteProfileRequest) (*Profile, error)
+	DeleteProfile(context.Context, *DeleteProfileRequest) (*common.SuccessIndicator, error)
 	GetManyProfiles(context.Context, *GetManyProfilesRequest) (*GetManyProfilesResponse, error)
 	GetManyProfilesMap(context.Context, *GetManyProfilesRequest) (*GetManyProfilesMapResponse, error)
 	UsernameTaken(context.Context, *UsernameTakenRequest) (*UsernameTakenResponse, error)
@@ -129,7 +130,7 @@ func (UnimplementedProfileServiceServer) GetProfile(context.Context, *GetProfile
 func (UnimplementedProfileServiceServer) UpdateProfile(context.Context, *UpdateProfileRequest) (*Profile, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UpdateProfile not implemented")
 }
-func (UnimplementedProfileServiceServer) DeleteProfile(context.Context, *DeleteProfileRequest) (*Profile, error) {
+func (UnimplementedProfileServiceServer) DeleteProfile(context.Context, *DeleteProfileRequest) (*common.SuccessIndicator, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DeleteProfile not implemented")
 }
 func (UnimplementedProfileServiceServer) GetManyProfiles(context.Context, *GetManyProfilesRequest) (*GetManyProfilesResponse, error) {

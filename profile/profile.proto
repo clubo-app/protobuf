@@ -3,11 +3,13 @@ syntax = "proto3";
 package profile;
 option go_package = "github.com/clubo-app/protobuf/profile";
 
+import "common/common.proto";
+
 service ProfileService {
     rpc CreateProfile(CreateProfileRequest) returns (Profile) {};
     rpc GetProfile (GetProfileRequest) returns (Profile) {};
     rpc UpdateProfile (UpdateProfileRequest) returns (Profile) {};
-    rpc DeleteProfile (DeleteProfileRequest) returns (Profile) {};
+    rpc DeleteProfile (DeleteProfileRequest) returns (common.SuccessIndicator) {};
 
     rpc GetManyProfiles (GetManyProfilesRequest) returns (GetManyProfilesResponse) {};
     rpc GetManyProfilesMap (GetManyProfilesRequest) returns (GetManyProfilesMapResponse) {};
