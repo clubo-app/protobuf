@@ -1,4 +1,4 @@
-all: gen-auth gen-comment gen-common gen-party gen-relation gen-story gen-user
+all: gen-auth gen-comment gen-common gen-party gen-profile gen-relation gen-story gen-user
 
 gen-auth:
 	protoc \
@@ -23,6 +23,12 @@ gen-party:
 	--go_out . --go_opt paths=source_relative \
 	--go-grpc_out . --go-grpc_opt paths=source_relative  \
 	party/*.proto
+
+gen-profile:
+	protoc \
+	--go_out . --go_opt paths=source_relative \
+	--go-grpc_out . --go-grpc_opt paths=source_relative  \
+	profile/*.proto
 
 gen-relation:
 	protoc \
