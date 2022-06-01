@@ -3,6 +3,7 @@ syntax = "proto3";
 package party;
 option go_package = "github.com/clubo-app/protobuf/party";
 
+import "google/protobuf/timestamp.proto";
 import "common/common.proto";
 
 service PartyService {
@@ -29,8 +30,8 @@ message CreatePartyRequest {
     string postal_code = 7;
     string state = 8;
     string country = 9;
-    string start_date = 10;
-    string end_date = 11;
+    google.protobuf.Timestamp start_date = 10;
+    google.protobuf.Timestamp end_date = 11;
 }
 
 message GetPartyRequest {
@@ -47,8 +48,8 @@ message UpdatePartyRequest {
     string postal_code = 7;
     string state = 8;
     string country = 9;
-    string start_date = 10;
-    string end_date = 11;
+    google.protobuf.Timestamp start_date = 10;
+    google.protobuf.Timestamp end_date = 11;
 }
 
 message DeletePartyRequest {
@@ -85,9 +86,9 @@ message Party {
     string postal_code = 8;
     string state = 9;
     string country = 10;
-    string start_date = 11;
-    string end_date = 12;
-    string created_at = 13;
+    google.protobuf.Timestamp start_date = 11;
+    google.protobuf.Timestamp end_date = 12;
+    google.protobuf.Timestamp created_at = 13;
 }
 
 message PagedParties {

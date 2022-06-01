@@ -3,6 +3,7 @@ syntax = "proto3";
 package story;
 option go_package = "github.com/clubo-app/protobuf/story";
 
+import "google/protobuf/timestamp.proto";
 import "common/common.proto";
 
 service StoryService {
@@ -22,7 +23,7 @@ message PublicStory {
     float long = 6;
     string url = 4;
     repeated string tagged_friends = 7;
-    string created_at = 8;
+    google.protobuf.Timestamp created_at = 8;
 }
 
 message CreateStoryRequest {

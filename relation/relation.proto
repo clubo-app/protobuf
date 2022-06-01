@@ -3,6 +3,7 @@ syntax = "proto3";
 package relation;
 option go_package = "github.com/clubo-app/protobuf/relation";
 
+import "google/protobuf/timestamp.proto";
 import "common/common.proto";
 
 service RelationService {
@@ -85,8 +86,8 @@ message FriendRelation {
     string user_id = 1;
     string friend_id = 2;
     bool accepted = 3;
-    string requested_at = 4;
-    string accepted_at = 5;
+    google.protobuf.Timestamp requested_at = 4;
+    google.protobuf.Timestamp accepted_at = 5;
 }
 
 message PagedFriendRelations {
@@ -105,7 +106,7 @@ message GetManyFriendCountResponse {
 message FavoriteParty {
     string user_id = 1;
     string party_id = 2;
-    string favorited_at = 3;
+    google.protobuf.Timestamp favorited_at = 3;
 }
 
 message PagedFavoriteParties {
