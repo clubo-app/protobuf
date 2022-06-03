@@ -7,31 +7,19 @@ import "google/protobuf/timestamp.proto";
 import "common/common.proto";
 
 service StoryService {
-    rpc CreateStory (CreateStoryRequest) returns (PublicStory) {};
-    rpc GetStory (GetStoryRequest) returns (PublicStory) {};
+    rpc CreateStory (CreateStoryRequest) returns (Story) {};
+    rpc GetStory (GetStoryRequest) returns (Story) {};
     rpc DeleteStory (DeleteStoryRequest) returns (common.MessageResponse) {};
     rpc GetByUser (GetByUserRequest) returns (PagedStories) {};
     rpc GetByParty (GetByPartyRequest) returns (PagedStories) {};
     rpc PresignURL (PresignURLRequest) returns (PresignURLResponse) {};
 }
 
-message PublicStory {
-    string id = 1;
-    string party_id = 2;
-    string user_id = 3;
-    float lat = 5;
-    float long = 6;
-    string url = 4;
-    repeated string tagged_friends = 7;
-    google.protobuf.Timestamp created_at = 8;
-}
-
+// Requests
 message CreateStoryRequest {
     string requester_id = 1;
     string party_id = 2;
     string url = 3;
-    float lat = 4;
-    float long = 5;
     repeated string tagged_friends = 6;
 }
 
@@ -46,23 +34,32 @@ message DeleteStoryRequest {
 
 message GetByUserRequest {
     string user_id = 1;
-    string next_page = 2;
-    uint32 limit = 3;
+    int32 offset = 2;
+    int32 limit = 3;
 }
 
 message GetByPartyRequest {
     string party_id = 1;
-    string next_page = 2;
-    uint32 limit = 3;
+    int32 offset = 2;
+    int32 limit = 3;
 }
 
 message PresignURLRequest {
     string key = 1;
 }
 
+// Response
+message Story {
+    string id = 1;
+    string party_id = 2;
+    string user_id = 3;
+    string url = 4;
+    repeated string tagged_friends = 7;
+    google.protobuf.Timestamp created_at = 8;
+}
+
 message PagedStories {
-    repeated PublicStory stories = 1;
-    string next_page = 2;
+    repeated Story stories = 1;
 }
 
 message PresignURLResponse {

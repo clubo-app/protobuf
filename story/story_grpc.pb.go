@@ -23,8 +23,8 @@ const _ = grpc.SupportPackageIsVersion7
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type StoryServiceClient interface {
-	CreateStory(ctx context.Context, in *CreateStoryRequest, opts ...grpc.CallOption) (*PublicStory, error)
-	GetStory(ctx context.Context, in *GetStoryRequest, opts ...grpc.CallOption) (*PublicStory, error)
+	CreateStory(ctx context.Context, in *CreateStoryRequest, opts ...grpc.CallOption) (*Story, error)
+	GetStory(ctx context.Context, in *GetStoryRequest, opts ...grpc.CallOption) (*Story, error)
 	DeleteStory(ctx context.Context, in *DeleteStoryRequest, opts ...grpc.CallOption) (*common.MessageResponse, error)
 	GetByUser(ctx context.Context, in *GetByUserRequest, opts ...grpc.CallOption) (*PagedStories, error)
 	GetByParty(ctx context.Context, in *GetByPartyRequest, opts ...grpc.CallOption) (*PagedStories, error)
@@ -39,8 +39,8 @@ func NewStoryServiceClient(cc grpc.ClientConnInterface) StoryServiceClient {
 	return &storyServiceClient{cc}
 }
 
-func (c *storyServiceClient) CreateStory(ctx context.Context, in *CreateStoryRequest, opts ...grpc.CallOption) (*PublicStory, error) {
-	out := new(PublicStory)
+func (c *storyServiceClient) CreateStory(ctx context.Context, in *CreateStoryRequest, opts ...grpc.CallOption) (*Story, error) {
+	out := new(Story)
 	err := c.cc.Invoke(ctx, "/story.StoryService/CreateStory", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -48,8 +48,8 @@ func (c *storyServiceClient) CreateStory(ctx context.Context, in *CreateStoryReq
 	return out, nil
 }
 
-func (c *storyServiceClient) GetStory(ctx context.Context, in *GetStoryRequest, opts ...grpc.CallOption) (*PublicStory, error) {
-	out := new(PublicStory)
+func (c *storyServiceClient) GetStory(ctx context.Context, in *GetStoryRequest, opts ...grpc.CallOption) (*Story, error) {
+	out := new(Story)
 	err := c.cc.Invoke(ctx, "/story.StoryService/GetStory", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -97,8 +97,8 @@ func (c *storyServiceClient) PresignURL(ctx context.Context, in *PresignURLReque
 // All implementations must embed UnimplementedStoryServiceServer
 // for forward compatibility
 type StoryServiceServer interface {
-	CreateStory(context.Context, *CreateStoryRequest) (*PublicStory, error)
-	GetStory(context.Context, *GetStoryRequest) (*PublicStory, error)
+	CreateStory(context.Context, *CreateStoryRequest) (*Story, error)
+	GetStory(context.Context, *GetStoryRequest) (*Story, error)
 	DeleteStory(context.Context, *DeleteStoryRequest) (*common.MessageResponse, error)
 	GetByUser(context.Context, *GetByUserRequest) (*PagedStories, error)
 	GetByParty(context.Context, *GetByPartyRequest) (*PagedStories, error)
@@ -110,10 +110,10 @@ type StoryServiceServer interface {
 type UnimplementedStoryServiceServer struct {
 }
 
-func (UnimplementedStoryServiceServer) CreateStory(context.Context, *CreateStoryRequest) (*PublicStory, error) {
+func (UnimplementedStoryServiceServer) CreateStory(context.Context, *CreateStoryRequest) (*Story, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreateStory not implemented")
 }
-func (UnimplementedStoryServiceServer) GetStory(context.Context, *GetStoryRequest) (*PublicStory, error) {
+func (UnimplementedStoryServiceServer) GetStory(context.Context, *GetStoryRequest) (*Story, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetStory not implemented")
 }
 func (UnimplementedStoryServiceServer) DeleteStory(context.Context, *DeleteStoryRequest) (*common.MessageResponse, error) {
