@@ -28,7 +28,7 @@ type AuthServiceClient interface {
 	GoogleLoginUser(ctx context.Context, in *GoogleLoginUserRequest, opts ...grpc.CallOption) (*LoginUserResponse, error)
 	AppleLoginUser(ctx context.Context, in *AppleLoginUserRequest, opts ...grpc.CallOption) (*LoginUserResponse, error)
 	VerifyEmail(ctx context.Context, in *VerifyEmailRequest, opts ...grpc.CallOption) (*Account, error)
-	ResendVerificationEmail(ctx context.Context, in *common.Empty, opts ...grpc.CallOption) (*common.SuccessIndicator, error)
+	ResendVerificationEmail(ctx context.Context, in *ResendVerificationEmailRequest, opts ...grpc.CallOption) (*common.SuccessIndicator, error)
 	GetAccount(ctx context.Context, in *GetAccountRequest, opts ...grpc.CallOption) (*Account, error)
 	UpdateAccount(ctx context.Context, in *UpdateAccountRequest, opts ...grpc.CallOption) (*Account, error)
 	DeleteAccount(ctx context.Context, in *DeleteAccountRequest, opts ...grpc.CallOption) (*common.SuccessIndicator, error)
@@ -88,7 +88,7 @@ func (c *authServiceClient) VerifyEmail(ctx context.Context, in *VerifyEmailRequ
 	return out, nil
 }
 
-func (c *authServiceClient) ResendVerificationEmail(ctx context.Context, in *common.Empty, opts ...grpc.CallOption) (*common.SuccessIndicator, error) {
+func (c *authServiceClient) ResendVerificationEmail(ctx context.Context, in *ResendVerificationEmailRequest, opts ...grpc.CallOption) (*common.SuccessIndicator, error) {
 	out := new(common.SuccessIndicator)
 	err := c.cc.Invoke(ctx, "/auth.AuthService/ResendVerificationEmail", in, out, opts...)
 	if err != nil {
@@ -142,7 +142,7 @@ type AuthServiceServer interface {
 	GoogleLoginUser(context.Context, *GoogleLoginUserRequest) (*LoginUserResponse, error)
 	AppleLoginUser(context.Context, *AppleLoginUserRequest) (*LoginUserResponse, error)
 	VerifyEmail(context.Context, *VerifyEmailRequest) (*Account, error)
-	ResendVerificationEmail(context.Context, *common.Empty) (*common.SuccessIndicator, error)
+	ResendVerificationEmail(context.Context, *ResendVerificationEmailRequest) (*common.SuccessIndicator, error)
 	GetAccount(context.Context, *GetAccountRequest) (*Account, error)
 	UpdateAccount(context.Context, *UpdateAccountRequest) (*Account, error)
 	DeleteAccount(context.Context, *DeleteAccountRequest) (*common.SuccessIndicator, error)
@@ -169,7 +169,7 @@ func (UnimplementedAuthServiceServer) AppleLoginUser(context.Context, *AppleLogi
 func (UnimplementedAuthServiceServer) VerifyEmail(context.Context, *VerifyEmailRequest) (*Account, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method VerifyEmail not implemented")
 }
-func (UnimplementedAuthServiceServer) ResendVerificationEmail(context.Context, *common.Empty) (*common.SuccessIndicator, error) {
+func (UnimplementedAuthServiceServer) ResendVerificationEmail(context.Context, *ResendVerificationEmailRequest) (*common.SuccessIndicator, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ResendVerificationEmail not implemented")
 }
 func (UnimplementedAuthServiceServer) GetAccount(context.Context, *GetAccountRequest) (*Account, error) {
@@ -288,7 +288,7 @@ func _AuthService_VerifyEmail_Handler(srv interface{}, ctx context.Context, dec 
 }
 
 func _AuthService_ResendVerificationEmail_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(common.Empty)
+	in := new(ResendVerificationEmailRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -300,7 +300,7 @@ func _AuthService_ResendVerificationEmail_Handler(srv interface{}, ctx context.C
 		FullMethod: "/auth.AuthService/ResendVerificationEmail",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(AuthServiceServer).ResendVerificationEmail(ctx, req.(*common.Empty))
+		return srv.(AuthServiceServer).ResendVerificationEmail(ctx, req.(*ResendVerificationEmailRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }

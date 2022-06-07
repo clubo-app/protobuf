@@ -11,7 +11,7 @@ service AuthService {
     rpc GoogleLoginUser (GoogleLoginUserRequest) returns (LoginUserResponse) {}
     rpc AppleLoginUser (AppleLoginUserRequest) returns (LoginUserResponse) {}
     rpc VerifyEmail (VerifyEmailRequest) returns (Account) {}
-    rpc ResendVerificationEmail (common.Empty) returns (common.SuccessIndicator) {}
+    rpc ResendVerificationEmail (ResendVerificationEmailRequest) returns (common.SuccessIndicator) {}
 
     rpc GetAccount (GetAccountRequest) returns (Account) {};
     rpc UpdateAccount (UpdateAccountRequest) returns (Account) {};
@@ -43,6 +43,10 @@ message VerifyEmailRequest {
     string code = 2;
 }
 
+message ResendVerificationEmailRequest {
+    string email = 1;
+}
+
 message GetAccountRequest {
     string id = 1;
 }
@@ -62,9 +66,18 @@ message EmailTakenRequest {
 }
 
 // Response
-enum AccountType {
+enum Type {
     USER = 0;
     COMPANY = 1;
+    DEV = 2;
+    ADMIN = 3;
+
+}
+
+enum Provider {
+    GOOGLE = 0;
+    FACEBOOK = 1;
+    APPLE = 2;
 }
  
 message Account {
@@ -72,9 +85,8 @@ message Account {
     string email = 2;
     bool email_verified = 3;
     string email_code = 4;
-    common.Provider provider = 5;
-    common.Role role = 6;
-    AccountType type = 7;
+    Provider provider = 5;
+    Type type = 6;
 }
 
 message RegisterUserResponse {

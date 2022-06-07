@@ -10,19 +10,3 @@ message MessageResponse {
 message SuccessIndicator {
     bool sucess = 1 ;
 }
-
-message Empty {
-
-}
-
-enum Role {
-    USER = 0;
-    DEV = 1;
-    ADMIN = 2;
-}
-
-enum Provider {
-    GOOGLE = 0;
-    FACEBOOK = 1;
-    APPLE = 2;
-}

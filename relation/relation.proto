@@ -52,7 +52,7 @@ message GetFriendRelationRequest {
 message GetFriendsOfUserRequest {
     string user_id = 1;
     string next_page = 2;
-    uint32 limit = 3;
+    uint64 limit = 3;
 }
 
 message GetFriendCountRequest {
@@ -71,13 +71,13 @@ message FavorPartyRequest {
 message GetFavoritePartiesByUserRequest {
     string user_id = 1;
     string next_page = 2;
-    uint32 limit = 3;
+    uint64 limit = 3;
 }
 
 message GetFavorisingUsersByPartyRequest {
     string party_id = 1;
     string next_page = 2;
-    uint32 limit = 3;
+    uint64 limit = 3;
 }
 
 
