@@ -20,7 +20,10 @@ service RelationService {
     rpc FavorParty (FavorPartyRequest) returns (FavoriteParty) {};
     rpc DefavorParty (FavorPartyRequest) returns (common.SuccessIndicator) {};
     rpc GetFavoritePartiesByUser (GetFavoritePartiesByUserRequest) returns (PagedFavoriteParties) {};
-    rpc GetFavorisingUsersByParty (GetFavorisingUsersByPartyRequest) returns (PagedFavoriteParties) {}
+    rpc GetFavorisingUsersByParty (GetFavorisingUsersByPartyRequest) returns (PagedFavoriteParties) {};
+
+    rpc GetFavoritePartyCount (GetFavoritePartyCountRequest) returns (GetFavoritePartyCountResponse) {};
+    rpc GetManyFavoritePartyCount (GetManyFavoritePartyCountRequest) returns (GetManyFavoritePartyCountResponse) {};
 }
 
 // Requests
@@ -80,6 +83,13 @@ message GetFavorisingUsersByPartyRequest {
     uint64 limit = 3;
 }
 
+message GetFavoritePartyCountRequest {
+    string party_id = 1;
+}
+
+message GetManyFavoritePartyCountRequest {
+    repeated string party_ids = 1;
+}
 
 // Responses
 message FriendRelation {
@@ -112,4 +122,12 @@ message FavoriteParty {
 message PagedFavoriteParties {
     repeated FavoriteParty favorite_parties = 1;
     string next_page = 2;
+}
+
+message GetFavoritePartyCountResponse {
+    uint32 favorite_count = 1;
+}
+
+message GetManyFavoritePartyCountResponse {
+    map<string, uint32> favorite_counts = 1;
 }
