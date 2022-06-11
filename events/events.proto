@@ -3,7 +3,6 @@ syntax="proto3";
 package events;
 option go_package = "github.com/clubo-app/protobuf/events";
 
-import "party/party.proto";
 import "profile/profile.proto";
 
 message Registered {
