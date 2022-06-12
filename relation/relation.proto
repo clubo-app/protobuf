@@ -61,6 +61,8 @@ message GetFriendsOfUserRequest {
 
 message GetIncomingFriendRequestsRequest {
     string user_id = 1;
+    string next_page = 2;
+    uint64 limit = 3;
 }
 
 message GetFriendCountRequest {
