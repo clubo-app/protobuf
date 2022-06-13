@@ -12,7 +12,7 @@ service RelationService {
     rpc DeclineFriendRequest (DeclineFriendRequestRequest) returns (common.SuccessIndicator) {};
     rpc RemoveFriend (RemoveFriendRequest) returns (common.SuccessIndicator) {};
     rpc GetFriendRelation (GetFriendRelationRequest) returns (FriendRelation) {};
-    rpc GetFriendsOfUser (GetFriendsOfUserRequest) returns (PagedFriendRelations) {};
+    rpc GetFriends (GetFriendsRequest) returns (PagedFriendRelations) {};
     rpc GetIncomingFriendRequests (GetIncomingFriendRequestsRequest) returns (PagedFriendRelations) {}; 
 
     rpc GetFriendCount (GetFriendCountRequest) returns (GetFriendCountResponse) {};
@@ -53,7 +53,7 @@ message GetFriendRelationRequest {
     string friend_id = 2;
 }
 
-message GetFriendsOfUserRequest {
+message GetFriendsRequest {
     string user_id = 1;
     string next_page = 2;
     uint64 limit = 3;

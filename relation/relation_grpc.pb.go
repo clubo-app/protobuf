@@ -28,7 +28,7 @@ type RelationServiceClient interface {
 	DeclineFriendRequest(ctx context.Context, in *DeclineFriendRequestRequest, opts ...grpc.CallOption) (*common.SuccessIndicator, error)
 	RemoveFriend(ctx context.Context, in *RemoveFriendRequest, opts ...grpc.CallOption) (*common.SuccessIndicator, error)
 	GetFriendRelation(ctx context.Context, in *GetFriendRelationRequest, opts ...grpc.CallOption) (*FriendRelation, error)
-	GetFriendsOfUser(ctx context.Context, in *GetFriendsOfUserRequest, opts ...grpc.CallOption) (*PagedFriendRelations, error)
+	GetFriends(ctx context.Context, in *GetFriendsRequest, opts ...grpc.CallOption) (*PagedFriendRelations, error)
 	GetIncomingFriendRequests(ctx context.Context, in *GetIncomingFriendRequestsRequest, opts ...grpc.CallOption) (*PagedFriendRelations, error)
 	GetFriendCount(ctx context.Context, in *GetFriendCountRequest, opts ...grpc.CallOption) (*GetFriendCountResponse, error)
 	GetManyFriendCount(ctx context.Context, in *GetManyFriendCountRequest, opts ...grpc.CallOption) (*GetManyFriendCountResponse, error)
@@ -93,9 +93,9 @@ func (c *relationServiceClient) GetFriendRelation(ctx context.Context, in *GetFr
 	return out, nil
 }
 
-func (c *relationServiceClient) GetFriendsOfUser(ctx context.Context, in *GetFriendsOfUserRequest, opts ...grpc.CallOption) (*PagedFriendRelations, error) {
+func (c *relationServiceClient) GetFriends(ctx context.Context, in *GetFriendsRequest, opts ...grpc.CallOption) (*PagedFriendRelations, error) {
 	out := new(PagedFriendRelations)
-	err := c.cc.Invoke(ctx, "/relation.RelationService/GetFriendsOfUser", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/relation.RelationService/GetFriends", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -192,7 +192,7 @@ type RelationServiceServer interface {
 	DeclineFriendRequest(context.Context, *DeclineFriendRequestRequest) (*common.SuccessIndicator, error)
 	RemoveFriend(context.Context, *RemoveFriendRequest) (*common.SuccessIndicator, error)
 	GetFriendRelation(context.Context, *GetFriendRelationRequest) (*FriendRelation, error)
-	GetFriendsOfUser(context.Context, *GetFriendsOfUserRequest) (*PagedFriendRelations, error)
+	GetFriends(context.Context, *GetFriendsRequest) (*PagedFriendRelations, error)
 	GetIncomingFriendRequests(context.Context, *GetIncomingFriendRequestsRequest) (*PagedFriendRelations, error)
 	GetFriendCount(context.Context, *GetFriendCountRequest) (*GetFriendCountResponse, error)
 	GetManyFriendCount(context.Context, *GetManyFriendCountRequest) (*GetManyFriendCountResponse, error)
@@ -224,8 +224,8 @@ func (UnimplementedRelationServiceServer) RemoveFriend(context.Context, *RemoveF
 func (UnimplementedRelationServiceServer) GetFriendRelation(context.Context, *GetFriendRelationRequest) (*FriendRelation, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetFriendRelation not implemented")
 }
-func (UnimplementedRelationServiceServer) GetFriendsOfUser(context.Context, *GetFriendsOfUserRequest) (*PagedFriendRelations, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method GetFriendsOfUser not implemented")
+func (UnimplementedRelationServiceServer) GetFriends(context.Context, *GetFriendsRequest) (*PagedFriendRelations, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetFriends not implemented")
 }
 func (UnimplementedRelationServiceServer) GetIncomingFriendRequests(context.Context, *GetIncomingFriendRequestsRequest) (*PagedFriendRelations, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetIncomingFriendRequests not implemented")
@@ -357,20 +357,20 @@ func _RelationService_GetFriendRelation_Handler(srv interface{}, ctx context.Con
 	return interceptor(ctx, in, info, handler)
 }
 
-func _RelationService_GetFriendsOfUser_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(GetFriendsOfUserRequest)
+func _RelationService_GetFriends_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetFriendsRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(RelationServiceServer).GetFriendsOfUser(ctx, in)
+		return srv.(RelationServiceServer).GetFriends(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/relation.RelationService/GetFriendsOfUser",
+		FullMethod: "/relation.RelationService/GetFriends",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(RelationServiceServer).GetFriendsOfUser(ctx, req.(*GetFriendsOfUserRequest))
+		return srv.(RelationServiceServer).GetFriends(ctx, req.(*GetFriendsRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -565,8 +565,8 @@ var RelationService_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _RelationService_GetFriendRelation_Handler,
 		},
 		{
-			MethodName: "GetFriendsOfUser",
-			Handler:    _RelationService_GetFriendsOfUser_Handler,
+			MethodName: "GetFriends",
+			Handler:    _RelationService_GetFriends_Handler,
 		},
 		{
 			MethodName: "GetIncomingFriendRequests",
