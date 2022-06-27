@@ -6,99 +6,108 @@ option go_package = "github.com/clubo-app/protobuf/auth";
 import "common/common.proto";
 
 service AuthService {
-    rpc RegisterUser (RegisterUserRequest) returns (RegisterUserResponse) {};
-    rpc LoginUser (LoginUserRequest) returns (LoginUserResponse) {};
-    rpc GoogleLoginUser (GoogleLoginUserRequest) returns (LoginUserResponse) {}
-    rpc AppleLoginUser (AppleLoginUserRequest) returns (LoginUserResponse) {}
-    rpc VerifyEmail (VerifyEmailRequest) returns (Account) {}
-    rpc ResendVerificationEmail (ResendVerificationEmailRequest) returns (common.SuccessIndicator) {}
+  rpc RegisterUser (RegisterUserRequest) returns (RegisterUserResponse) {};
+  rpc LoginUser (LoginUserRequest) returns (LoginUserResponse) {};
+  rpc GoogleLoginUser (GoogleLoginUserRequest) returns (LoginUserResponse) {}
+  rpc AppleLoginUser (AppleLoginUserRequest) returns (LoginUserResponse) {}
+  rpc VerifyEmail (VerifyEmailRequest) returns (Account) {}
+  rpc ResendVerificationEmail (ResendVerificationEmailRequest) returns (common.SuccessIndicator) {}
+  rpc RefreshAccessToken (RefreshAccessTokenRequest) returns (TokenResponse) {}
 
-    rpc GetAccount (GetAccountRequest) returns (Account) {};
-    rpc UpdateAccount (UpdateAccountRequest) returns (Account) {};
-    rpc DeleteAccount (DeleteAccountRequest) returns (common.SuccessIndicator) {};
-    rpc EmailTaken (EmailTakenRequest) returns (EmailTakenResponse) {};
+  rpc GetAccount (GetAccountRequest) returns (Account) {};
+  rpc UpdateAccount (UpdateAccountRequest) returns (Account) {};
+  rpc DeleteAccount (DeleteAccountRequest) returns (common.SuccessIndicator) {};
+  rpc EmailTaken (EmailTakenRequest) returns (EmailTakenResponse) {};
 }
 
 // Requests
 message RegisterUserRequest {
-    string email = 1;
-    string password = 2;
+  string email = 1;
+  string password = 2;
 }
 
 message LoginUserRequest {
-    string email = 1;
-    string password = 2;
+  string email = 1;
+  string password = 2;
 }
 
 message GoogleLoginUserRequest {
-    string token = 1;
+  string token = 1;
 }
 
 message AppleLoginUserRequest {
-    string token = 1;
+  string token = 1;
 }
 
 message VerifyEmailRequest {
-    string id = 1;
-    string code = 2;
+  string id = 1;
+  string code = 2;
 }
 
 message ResendVerificationEmailRequest {
-    string email = 1;
+  string email = 1;
+}
+
+message RefreshAccessTokenRequest {
+  string user_id = 1;
+  string refresh_token = 2;
 }
 
 message GetAccountRequest {
-    string id = 1;
+  string id = 1;
 }
 
 message UpdateAccountRequest {
-    string id = 1;
-    string email = 2;
-    string password = 3;
+  string id = 1;
+  string email = 2;
+  string password = 3;
 }
 
 message DeleteAccountRequest {
-    string id = 1;
+  string id = 1;
 }
 
 message EmailTakenRequest {
-    string email = 1;
+  string email = 1;
 }
 
 // Response
 enum Type {
-    USER = 0;
-    COMPANY = 1;
-    DEV = 2;
-    ADMIN = 3;
-
+  USER = 0;
+  COMPANY = 1;
+  DEV = 2;
+  ADMIN = 3;
 }
 
 enum Provider {
-    GOOGLE = 0;
-    FACEBOOK = 1;
-    APPLE = 2;
+  GOOGLE = 0;
+  FACEBOOK = 1;
+  APPLE = 2;
 }
- 
+
+message TokenResponse {
+  string access_token = 1; 
+}
+
 message Account {
-    string id = 1;
-    string email = 2;
-    bool email_verified = 3;
-    string email_code = 4;
-    Provider provider = 5;
-    Type type = 6;
+  string id = 1;
+  string email = 2;
+  bool email_verified = 3;
+  string email_code = 4;
+  Provider provider = 5;
+  Type type = 6;
 }
 
 message RegisterUserResponse {
-    string token = 1;
-    Account account = 2;
+  string access_token = 1;
+  Account account = 2;
 }
 
 message LoginUserResponse {
-    string token = 1;
-    Account account = 2;
+  string access_token = 1;
+  Account account = 2;
 }
 
 message EmailTakenResponse {
-    bool taken = 1;
+  bool taken = 1;
 }
