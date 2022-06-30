@@ -50,7 +50,7 @@ message ResendVerificationEmailRequest {
 
 message RefreshAccessTokenRequest {
   string user_id = 1;
-  string refresh_token = 2;
+  int32 refresh_generation = 2;
 }
 
 message GetAccountRequest {
