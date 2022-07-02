@@ -49,7 +49,7 @@ message ResendVerificationEmailRequest {
 }
 
 message RefreshAccessTokenRequest {
-  int32 refresh_generation = 1;
+  string refresh_token = 1;
 }
 
 message GetAccountRequest {
