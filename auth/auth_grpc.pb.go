@@ -23,7 +23,7 @@ const _ = grpc.SupportPackageIsVersion7
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type AuthServiceClient interface {
-	RegisterUser(ctx context.Context, in *RegisterUserRequest, opts ...grpc.CallOption) (*RegisterUserResponse, error)
+	RegisterUser(ctx context.Context, in *RegisterUserRequest, opts ...grpc.CallOption) (*LoginUserResponse, error)
 	LoginUser(ctx context.Context, in *LoginUserRequest, opts ...grpc.CallOption) (*LoginUserResponse, error)
 	GoogleLoginUser(ctx context.Context, in *GoogleLoginUserRequest, opts ...grpc.CallOption) (*LoginUserResponse, error)
 	AppleLoginUser(ctx context.Context, in *AppleLoginUserRequest, opts ...grpc.CallOption) (*LoginUserResponse, error)
@@ -44,8 +44,8 @@ func NewAuthServiceClient(cc grpc.ClientConnInterface) AuthServiceClient {
 	return &authServiceClient{cc}
 }
 
-func (c *authServiceClient) RegisterUser(ctx context.Context, in *RegisterUserRequest, opts ...grpc.CallOption) (*RegisterUserResponse, error) {
-	out := new(RegisterUserResponse)
+func (c *authServiceClient) RegisterUser(ctx context.Context, in *RegisterUserRequest, opts ...grpc.CallOption) (*LoginUserResponse, error) {
+	out := new(LoginUserResponse)
 	err := c.cc.Invoke(ctx, "/auth.AuthService/RegisterUser", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -147,7 +147,7 @@ func (c *authServiceClient) EmailTaken(ctx context.Context, in *EmailTakenReques
 // All implementations must embed UnimplementedAuthServiceServer
 // for forward compatibility
 type AuthServiceServer interface {
-	RegisterUser(context.Context, *RegisterUserRequest) (*RegisterUserResponse, error)
+	RegisterUser(context.Context, *RegisterUserRequest) (*LoginUserResponse, error)
 	LoginUser(context.Context, *LoginUserRequest) (*LoginUserResponse, error)
 	GoogleLoginUser(context.Context, *GoogleLoginUserRequest) (*LoginUserResponse, error)
 	AppleLoginUser(context.Context, *AppleLoginUserRequest) (*LoginUserResponse, error)
@@ -165,7 +165,7 @@ type AuthServiceServer interface {
 type UnimplementedAuthServiceServer struct {
 }
 
-func (UnimplementedAuthServiceServer) RegisterUser(context.Context, *RegisterUserRequest) (*RegisterUserResponse, error) {
+func (UnimplementedAuthServiceServer) RegisterUser(context.Context, *RegisterUserRequest) (*LoginUserResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method RegisterUser not implemented")
 }
 func (UnimplementedAuthServiceServer) LoginUser(context.Context, *LoginUserRequest) (*LoginUserResponse, error) {

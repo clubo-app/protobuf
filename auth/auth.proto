@@ -6,7 +6,7 @@ option go_package = "github.com/clubo-app/protobuf/auth";
 import "common/common.proto";
 
 service AuthService {
-  rpc RegisterUser (RegisterUserRequest) returns (RegisterUserResponse) {};
+  rpc RegisterUser (RegisterUserRequest) returns (LoginUserResponse) {};
   rpc LoginUser (LoginUserRequest) returns (LoginUserResponse) {};
   rpc GoogleLoginUser (GoogleLoginUserRequest) returns (LoginUserResponse) {}
   rpc AppleLoginUser (AppleLoginUserRequest) returns (LoginUserResponse) {}
@@ -86,6 +86,7 @@ enum Provider {
 
 message TokenResponse {
   string access_token = 1; 
+  string refresh_token = 2;
 }
 
 message Account {
@@ -97,13 +98,8 @@ message Account {
   Type type = 6;
 }
 
-message RegisterUserResponse {
-  string access_token = 1;
-  Account account = 2;
-}
-
 message LoginUserResponse {
-  string access_token = 1;
+  TokenResponse tokens = 1;
   Account account = 2;
 }
 
