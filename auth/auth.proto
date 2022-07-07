@@ -72,16 +72,18 @@ message EmailTakenRequest {
 
 // Response
 enum Type {
-  USER = 0;
-  COMPANY = 1;
-  DEV = 2;
-  ADMIN = 3;
+  UNKOWNTYPE = 0;
+  USER = 1;
+  COMPANY = 2;
+  DEV = 3;
+  ADMIN = 4;
 }
 
 enum Provider {
-  GOOGLE = 0;
-  FACEBOOK = 1;
-  APPLE = 2;
+  UNKOWNPROVIDER = 0;
+  GOOGLE = 1;
+  FACEBOOK = 2;
+  APPLE = 3;
 }
 
 message TokenResponse {
