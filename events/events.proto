@@ -4,6 +4,7 @@ package events;
 option go_package = "github.com/clubo-app/protobuf/events";
 
 import "profile/profile.proto";
+import "google/protobuf/timestamp.proto";
 
 message Registered {
     string id = 1;
@@ -34,7 +35,7 @@ message PartyCreated {
     string created_at = 13;
 }
 
-message PartyUpdated {
+message PartyUpdated { 
     string id = 1;
     string user_id = 2;
     string title = 3;
@@ -57,9 +58,11 @@ message FriendRemoved {
 message FriendRequested {
     string user_id = 1;
     string friend_id = 2;
+    google.protobuf.Timestamp requested_at = 3; 
 }
 
 message FriendAccepted {
     string user_id = 1;
     string friend_id = 2;
+    google.protobuf.Timestamp accepted_at = 3; 
 }
