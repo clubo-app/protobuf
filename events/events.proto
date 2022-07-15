@@ -61,8 +61,9 @@ message FriendRequested {
     google.protobuf.Timestamp requested_at = 3; 
 }
 
-message FriendAccepted {
+message FriendCreated {
     string user_id = 1;
     string friend_id = 2;
     google.protobuf.Timestamp accepted_at = 3; 
+    google.protobuf.Timestamp requested_at = 4; 
 }
