@@ -51,19 +51,30 @@ message PartyUpdated {
 }
 
 message FriendRemoved {
-    string user_id = 1;
-    string friend_id = 2;
+  string user_id = 1;
+  string friend_id = 2;
 }
 
 message FriendRequested {
-    string user_id = 1;
-    string friend_id = 2;
-    google.protobuf.Timestamp requested_at = 3; 
+  string user_id = 1;
+  string friend_id = 2;
+  google.protobuf.Timestamp requested_at = 3; 
 }
 
 message FriendCreated {
-    string user_id = 1;
-    string friend_id = 2;
-    google.protobuf.Timestamp accepted_at = 3; 
-    google.protobuf.Timestamp requested_at = 4; 
+  string user_id = 1;
+  string friend_id = 2;
+  google.protobuf.Timestamp accepted_at = 3; 
+}
+
+message PartyFavorited {
+  string user_id = 1;
+  string party_id = 2;
+  google.protobuf.Timestamp favorited_at= 3; 
+}
+
+message PartyUnfavorited {
+  string user_id = 1;
+  string party_id = 2;
+  google.protobuf.Timestamp unfavorited_at= 3; 
 }
