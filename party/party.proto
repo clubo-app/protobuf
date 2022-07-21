@@ -64,10 +64,11 @@ message GetByUserRequest {
 }
 
 message GeoSearchRequest {
-    int64 precision = 1;
+    int32 radius = 1;
     float lat = 2;
     float long = 3;
-    string next_page = 4;
+    int32 offset = 4;
+    int32 limit = 5;
 }
 
 message GetManyPartiesRequest {
