@@ -8,7 +8,6 @@ import "common/common.proto";
 
 service StoryService {
     rpc CreateStory (CreateStoryRequest) returns (Story) {};
-    rpc GetStory (GetStoryRequest) returns (Story) {};
     rpc DeleteStory (DeleteStoryRequest) returns (common.MessageResponse) {};
     rpc GetByUser (GetByUserRequest) returns (PagedStories) {};
     rpc GetByParty (GetByPartyRequest) returns (PagedStories) {};
@@ -20,11 +19,9 @@ message CreateStoryRequest {
     string requester_id = 1;
     string party_id = 2;
     string url = 3;
-    repeated string tagged_friends = 6;
-}
-
-message GetStoryRequest {
-    string story_id = 1;
+    repeated string tagged_friends = 4;
+    string next_page = 5;
+    uint32 limit = 6;
 }
 
 message DeleteStoryRequest {
@@ -34,14 +31,14 @@ message DeleteStoryRequest {
 
 message GetByUserRequest {
     string user_id = 1;
-    int32 offset = 2;
-    int32 limit = 3;
+    string next_page = 5;
+    uint32 limit = 3;
 }
 
 message GetByPartyRequest {
     string party_id = 1;
-    int32 offset = 2;
-    int32 limit = 3;
+    string next_page = 5;
+    uint32 limit = 3;
 }
 
 message PresignURLRequest {
