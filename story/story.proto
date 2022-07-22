@@ -57,6 +57,7 @@ message Story {
 
 message PagedStories {
     repeated Story stories = 1;
+    string next_page = 2;
 }
 
 message PresignURLResponse {
