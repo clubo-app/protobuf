@@ -20,8 +20,6 @@ message CreateStoryRequest {
     string party_id = 2;
     string url = 3;
     repeated string tagged_friends = 4;
-    string next_page = 5;
-    uint32 limit = 6;
 }
 
 message DeleteStoryRequest {
